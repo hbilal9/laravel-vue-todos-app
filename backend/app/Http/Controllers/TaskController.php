@@ -41,10 +41,7 @@ class TaskController extends Controller
             'completed' => 'boolean',
         ]);
     
-        $task->update([
-            'description' => $validated['description'] ?? $task->description,
-            'completed' => ! $task->completed,
-        ]);
+        $task->update($validated);
     
         return response()->json($task);
     }
