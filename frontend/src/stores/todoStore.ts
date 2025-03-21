@@ -6,6 +6,8 @@ import { fetchTodos, createTodo, updateTodo, deleteTodo } from "@/services/todoS
 export const useTodoStore = defineStore("todo", () => {
 	const todos = ref<ITodo[]>([]);
 	const isLoading = ref(false);
+	const isCreating = ref(false);
+	const isUpdating = ref(false);
 	const error = ref<string | null>(null);
 
 	// Fetch all todos from the API
@@ -13,7 +15,8 @@ export const useTodoStore = defineStore("todo", () => {
 		isLoading.value = true;
 		error.value = null;
 		try {
-			todos.value = await fetchTodos();
+			const response = await fetchTodos();
+			todos.value = response;
 		} catch (err) {
 			error.value = "Failed to fetch todos";
 			console.error(err);
@@ -24,7 +27,7 @@ export const useTodoStore = defineStore("todo", () => {
 
 	// Add a new todo
 	const addTodo = async (description: string) => {
-		isLoading.value = true;
+		isCreating.value = true;
 		error.value = null;
 		try {
 			const newTodo = await createTodo({
@@ -36,7 +39,7 @@ export const useTodoStore = defineStore("todo", () => {
 			error.value = "Failed to add todo";
 			console.error(err);
 		} finally {
-			isLoading.value = false;
+			isCreating.value = false;
 		}
 	};
 
@@ -60,7 +63,7 @@ export const useTodoStore = defineStore("todo", () => {
 		const todo = todos.value.find((todo) => todo.id === id);
 		if (!todo) return;
 
-		isLoading.value = true;
+		isUpdating.value = true;
 		error.value = null;
 		try {
 			const updatedTodo = { ...todo, completed: !todo.completed };
@@ -70,9 +73,9 @@ export const useTodoStore = defineStore("todo", () => {
 			error.value = "Failed to update todo";
 			console.error(err);
 		} finally {
-			isLoading.value = false;
+			isUpdating.value = false;
 		}
 	};
 
-	return { todos, getTodos, addTodo, removeTodo, toggleTodo };
+	return { todos, getTodos, addTodo, removeTodo, toggleTodo, isLoading, error, isCreating, isUpdating };
 });
