@@ -12,15 +12,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $tasks = Task::all();
+        return response()->json($tasks);
     }
 
     /**
@@ -28,23 +21,14 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'description' => 'required|string',
+            'completed' => 'boolean',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task)
-    {
-        //
-    }
+        $task = Task::create($request->all());
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        //
+        return response()->json($task, 201);
     }
 
     /**
@@ -52,7 +36,17 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $validated = $request->validate([
+            'description' => 'string',
+            'completed' => 'boolean',
+        ]);
+    
+        $task->update([
+            'description' => $validated['description'] ?? $task->description,
+            'completed' => ! $task->completed,
+        ]);
+    
+        return response()->json($task);
     }
 
     /**
@@ -60,6 +54,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return response()->json(null, 204);
     }
 }
