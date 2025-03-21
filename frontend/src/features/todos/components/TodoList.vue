@@ -2,8 +2,9 @@
 import { Label } from "@/components/ui/label";
 import { ref } from "vue";
 import TodoItem from "./TodoItem.vue";
+import type { ITodo } from "@/types";
 
-const todos = ref([
+const todos = ref<ITodo[]>([
 	{
 		id: 1,
 		description: "Create laravel backend",

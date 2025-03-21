@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { Check, RotateCw } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
+import type { ITodo } from "@/types";
 
-const { todo } = defineProps({
-	todo: {
-		type: Object,
-		required: true,
-	},
-});
+const { todo } = defineProps<{ todo: ITodo }>();
 </script>
 
 <template>
