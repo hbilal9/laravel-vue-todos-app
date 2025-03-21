@@ -3,5 +3,5 @@ import {} from "vue";
 </script>
 
 <template>
-	<div>This is todo app, where you can manage your tasks.</div>
+	<div class="text-center py-8 text-xl">This is todo app, where you can manage your tasks.</div>
 </template>
